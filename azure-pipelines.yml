@@ -10,6 +10,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: SonarQubePrepare@4
+  inputs:
+    SonarQube: 'TestConectionSQ'
+    scannerMode: 'Other'
+
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -20,3 +26,9 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean install'
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: latest
+
+- task: SonarQubePublish@4
+  inputs:
+    pollingTimeoutSec: '300'
